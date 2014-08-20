@@ -1,6 +1,6 @@
 """ Last working on:
 
-            Fucking GITHUB intergration....
+            GITHUB, WHY U SO HARD?
             Moved calc functions to their own file.
             Those functions are now imported.
 

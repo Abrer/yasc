@@ -1,5 +1,5 @@
 #!/usr/bin/python2
-__author__ = 'abrer'    # PyCharm adds this to everything.... testbranch1
+__author__ = 'abrer'    # PyCharm adds this to everything....
 # Last updated 08 / 20 / 2014
 # Yet Another Subnet Calculator --  YASC 
 
