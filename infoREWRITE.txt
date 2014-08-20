@@ -1,0 +1,15 @@
+""" Last working on:
+
+            Fucking GITHUB intergration....
+            Moved calc functions to their own file.
+            Those functions are now imported.
+
+    TODO:
+        - Fix input of masks at /8 or lower:
+            /8 shows 255.0.0
+            Lower shows 0.0.0.0
+        - Finish the GetClass() function! It's easy, dunno why I haven't bothered yet.
+        - Fix line 92 -- use a for loop to add . for readability... mehbe.
+        - Add subnets per host and etc...
+        - Colorize output for better visibility -- hopefully with ANSI escape codes for $BASH.
+"""
