@@ -52,7 +52,7 @@ def main():
     print 'IP Address: \t%s /%s'        % (ip_address, network_bits)
     print 'Subnet Mask: \t%s'           % subnet_mask
     print '-' * 40                      # Divider!
-    print 'Class: \t\t%s'                 % network_class
+    print 'Class: \t\t%s'               % network_class
     print 'Network Addr: \t%s'          % network_address
     print 'Network Range: \t%s - %s'    % (first_usable_address, last_usable_address)
     print 'Broadcast: \t%s'             % broadcast_address
