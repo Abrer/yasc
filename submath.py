@@ -208,8 +208,27 @@ def get_net_increment(working_octet_value):
     else:
         return 256 - int(working_octet_value)
 
-def get_class():
+def get_class(ip_address):
     # Get our class!
+    ip_address = ip_address.split('.')
+
+    first_octet = int(ip_address[0])
+    net_class = ''
+
+
+    if first_octet > 0:
+        net_class = 'A'
+    if first_octet >= 128:
+        net_class = 'B'
+    if first_octet >= 192:
+        net_class = 'C'
+    if first_octet >= 224:  # 224 and above is multicast
+        net_class = 'MULTICAST'
+    if first_octet >= 240:  # 240 and above is expirmental / reserved
+        net_class = 'E / EXPERIMENTAL'
+    if first_octet == 127:  # 127.x.x.x is loopback
+        net_class = 'LOOPBACK'
+
     print 'Work in progress'
 
 def err_check_input(arguments):
