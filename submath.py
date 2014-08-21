@@ -1,10 +1,6 @@
 __author__ = 'abrer'    # PyCharm adds this to everything....
-# Yet Another Subnet Calculator --  YASC -- submath
 
-'''
-    - Review GetWorkingOctet* functions
-    - Fix line 113 and other things
-'''
+# All the maths for yasc.
 
 import sys
 
@@ -29,7 +25,6 @@ def cidr_to_decimal(network_bits):
         '7': '254.',
         '8': '255.'
     }
-
 
     decimal_mask = ''
 
@@ -155,7 +150,7 @@ def get_working_octet_value(subnet_mask):
         if subnet_mask[i] != '255':
             working_octet_value = subnet_mask[i]
             break
-        elif i == 3: # DEBUGGING PURPOSES -- in the event that mask is /32
+        elif i == 3:  # DEBUGGING PURPOSES -- in the event that mask is /32
             working_octet_value = subnet_mask[i]
 
     return working_octet_value
@@ -172,7 +167,6 @@ def get_binary_mask(subnet_mask):
 
         # And save to MaskString
         binary_mask_string = binary_mask_string + binary_mask[i] + '.'
-
 
     return binary_mask_string[:-1]  # Remove the '.' at the end of the string.
 
@@ -237,7 +231,6 @@ def get_class(ip_address):
     first_octet = int(ip_address[0])
     net_class = ''
 
-
     if first_octet > 0:
         net_class = 'A'
     if first_octet >= 128:
@@ -278,5 +271,3 @@ def err_check_input(arguments):
             print '\nDem bits is too damn high! Don\'t exceed /30!'
             print 'Should I have a use for that in the future I\'ll add it in.\n'
             sys.exit(0)
-    else:   # This else doesn't actually do anything. lol
-        pass
