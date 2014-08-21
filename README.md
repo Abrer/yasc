@@ -11,12 +11,7 @@ Otherwise... a small Python2 project to get back into the swing of things.
 
   Last working on:
 
-    Fixed total halt on certain masks: /24 etc
-    Fixed Subnet Mask display showing extra extra octets
-
-    yasc 172.168.1.51 /24
-        - Provides goofy network range. Investigate.
-
+    Fixed incorrect ranges on /24
 
   TODO:
   
