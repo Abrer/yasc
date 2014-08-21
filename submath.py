@@ -139,27 +139,34 @@ def get_broadcast(ip_net_address, working_octet, net_increment, net_bits):
 
     return broadcast_address[:-1]
 
-def get_network_address(ip_address, working_octet, net_increment, net_bits):
+def get_network_address(ip_address, wrk_octet, net_increment, net_bits):
     # Get Network Address
-    working_octet -= 1  # Subtract 1 since list index start at 0.
+    wrk_octet -= 1  # Subtract 1 since list index start at 0.
 
     ip_address = ip_address.split('.')
 
     # For every octet past initial work octet, set to 0
     for i in range(0, len(ip_address)):
-        if i > working_octet:
+        if i > wrk_octet:
             ip_address[i] = '0'
 
     # Math for network address
     if net_bits == 24:  # /24 is a special case it seems
-        ip_address[working_octet] = '0'
+        ip_address[wrk_octet] = '0'
     else:
-        ip_address[working_octet] = str((int(ip_address[working_octet]) / int(net_increment)) * net_increment)
+        # Vars made for the sake of line length - WIP
+        # a = int(ip_address[wrk_octet])
+        # b = net_increment
+        # ip_address = str((a / b) * b)
+        ip_address[wrk_octet] =\
+            str((int(ip_address[wrk_octet]) / net_increment) * net_increment)
 
-    network_address = ip_address[0] + '.' + ip_address[1] + '.' + ip_address[2]\
-                      + '.' + ip_address[3]  # Find a better way to do this
+    network_address = ''
 
-    return network_address
+    for value in ip_address:  # This looks much better
+        network_address += value + '.'
+
+    return network_address[:-1]
 
 def get_working_octet_value(subnet_mask):
     # Return the DECIMAL VALUE of working octet
@@ -171,7 +178,7 @@ def get_working_octet_value(subnet_mask):
         if subnet_mask[i] != '255':
             working_octet_value = subnet_mask[i]
             break
-        elif i == 3:  # DEBUGGING PURPOSES -- in the event that mask is /32
+        elif i == 3:  # in the event that mask is /32
             working_octet_value = subnet_mask[i]
 
     return working_octet_value
@@ -233,7 +240,7 @@ def get_working_octet(subnet_mask):
             working_octet = i+1
             break
         else:
-            working_octet = 4  # This is in the case that the mask is a /32 for now. DEBUGGING PURPOSES.
+            working_octet = 4  # In event of a /32 mask
 
     return working_octet
 
