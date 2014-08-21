@@ -34,7 +34,7 @@ def main():
     working_octet = get_working_octet(subnet_mask)
     working_octet_value = get_working_octet_value(subnet_mask)
     
-    net_increment = get_net_increment(working_octet_value) #getting an error with /24
+    net_increment = get_net_increment(working_octet_value)
     binary_mask = get_binary_mask(subnet_mask)
 
     network_address = get_network_address(ip_address,
