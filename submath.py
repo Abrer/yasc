@@ -1,5 +1,4 @@
 __author__ = 'abrer'    # PyCharm adds this to everything....
-# Last updated 08 / 20 / 2014
 # Yet Another Subnet Calculator --  YASC -- submath
 
 '''
@@ -59,11 +58,10 @@ def num_of_hosts(net_bits):
 
 def num_of_networks(net_class, net_bits):
     # Return number of networks the subnetting yields.
-    #NETBITS - CLASSBITS = NETWORKS
 
     class_bits = 0
 
-    if net_class== 'A':
+    if net_class == 'A':
         class_bits = 8
     if net_class == 'B':
         class_bits = 16
