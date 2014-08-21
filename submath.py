@@ -50,6 +50,30 @@ def cidr_to_decimal(network_bits):
 
     return decimal_mask[:-1]
 
+def num_of_hosts(net_bits):
+    # Return number of hosts per network
+    MAX_BITS = 32
+    hosts_per_network = 2 ** (MAX_BITS - net_bits) - 2
+
+    return str(hosts_per_network)
+
+def num_of_networks(net_class, net_bits):
+    # Return number of networks the subnetting yields.
+    #NETBITS - CLASSBITS = NETWORKS
+
+    class_bits = 0
+
+    if net_class== 'A':
+        class_bits = 8
+    if net_class == 'B':
+        class_bits = 16
+    if net_class == 'C':
+        class_bits = 24
+
+    networks = 2 ** (net_bits - class_bits)
+
+    return str(networks)
+
 def get_first_usable_address(network_address):
     #Get first usable address
     network_address = network_address.split('.')
@@ -229,7 +253,7 @@ def get_class(ip_address):
     if first_octet == 127:  # 127.x.x.x is loopback
         net_class = 'LOOPBACK'
 
-    print 'Work in progress'
+    return net_class
 
 def err_check_input(arguments):
 

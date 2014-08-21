@@ -1,22 +1,8 @@
 #!/usr/bin/python2
 __author__ = 'abrer'    # PyCharm adds this to everything....
 # Last updated 08 / 20 / 2014
-# Yet Another Subnet Calculator --  YASC 
+# Yet Another Subnet Calculator --  YASC
 
-""" Last working on:
-
-        - Moved calc functions to their own file: submath.py
-        - Those functions are now imported.
-
-    TODO:
-        - Fix input of masks at /8 or lower:
-            /8 shows 255.0.0
-            Lower shows 0.0.0.0
-        - Finish the GetClass() function! It's easy, dunno why I haven't bothered yet.
-        - Fix line 92 -- use a for loop to add . for readability... mehbe.
-        - Add subnets per host and etc...
-        - Colorize output for better visibility -- hopefully with ANSI escape codes for $BASH.
-"""
 import sys
 
 # import all of the old functions now in the
@@ -41,6 +27,7 @@ def main():
     ip_address = sys.argv[1]
 
     # Some handy vars!
+    network_class = get_class(ip_address)
     network_bits = get_network_bits(subnet_mask)
     working_octet = get_working_octet(subnet_mask)
     working_octet_value = get_working_octet_value(subnet_mask)
@@ -57,14 +44,20 @@ def main():
     last_usable_address = get_last_usable_address(broadcast_address)
     first_usable_address = get_first_usable_address(network_address)
 
+    available_hosts = num_of_hosts(network_bits)
+    available_subnets = num_of_networks(network_class, network_bits)
+
     # Print our info to the screen!
     print ''
     print 'IP Address: \t%s /%s'        % (ip_address, network_bits)
     print 'Subnet Mask: \t%s'           % subnet_mask
     print '-' * 40                      # Divider!
+    print 'Class: \t\t%s'                 % network_class
     print 'Network Addr: \t%s'          % network_address
     print 'Network Range: \t%s - %s'    % (first_usable_address, last_usable_address)
     print 'Broadcast: \t%s'             % broadcast_address
+    print 'Avail Hosts: \t%s'           % available_hosts
+    print 'Avail Subnets: \t%s'         % available_subnets
     print '-' * 40                      # Divider!
     print 'Binary Mask: \t%s'           % binary_mask
     print 'Net Increment: \t%s'         % net_increment
