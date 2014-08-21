@@ -1,6 +1,5 @@
 #!/usr/bin/python2
 __author__ = 'abrer'    # PyCharm adds this to everything....
-# Last updated 08 / 20 / 2014
 # Yet Another Subnet Calculator --  YASC
 
 import sys
@@ -23,9 +22,8 @@ def main():
     ip_address = sys.argv[1]
 
     # # Fixed values for debugging
-    # ip_address = '192.168.15.43'
+    # ip_address = '172.168.1.51'
     # subnet_mask = '255.255.255.0'
-
 
 
     # Some handy vars!
@@ -38,10 +36,10 @@ def main():
     binary_mask = get_binary_mask(subnet_mask)
 
     network_address = get_network_address(ip_address,
-                                          working_octet, net_increment)
+                                          working_octet, net_increment, network_bits)
     
     broadcast_address = get_broadcast(network_address,
-                                      working_octet, net_increment)
+                                      working_octet, net_increment, network_bits)
 
     last_usable_address = get_last_usable_address(broadcast_address)
     first_usable_address = get_first_usable_address(network_address)

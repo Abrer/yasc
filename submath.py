@@ -118,16 +118,19 @@ def get_last_usable_address(broadcast_address):
     #Shaves off the last . from the string so it looks nice. Slices are awesome!
     return last_usable[:-1]
 
-def get_broadcast(ip_net_address, working_octet, net_increment):
+def get_broadcast(ip_net_address, working_octet, net_increment, net_bits):
     # Currently returns Broadcast
     net_address = ip_net_address.split('.')
     working_octet -= 1
 
-    for i in range(0, len(net_address)):
-        if i == working_octet:
-            net_address[i] = str(int(net_address[i]) + net_increment -1)
-        if i > working_octet:
-            net_address[i] = '255'
+    if net_bits == 24:  # /24 is a special case
+        net_address[3] = '255'
+    else:
+        for i in range(0, len(net_address)):
+            if i == working_octet:
+                net_address[i] = str(int(net_address[i]) + net_increment -1)
+            if i > working_octet:
+                net_address[i] = '255'
 
     broadcast_address = ''
 
@@ -136,7 +139,7 @@ def get_broadcast(ip_net_address, working_octet, net_increment):
 
     return broadcast_address[:-1]
 
-def get_network_address(ip_address, working_octet, net_increment):
+def get_network_address(ip_address, working_octet, net_increment, net_bits):
     # Get Network Address
     working_octet -= 1  # Subtract 1 since list index start at 0.
 
@@ -148,7 +151,10 @@ def get_network_address(ip_address, working_octet, net_increment):
             ip_address[i] = '0'
 
     # Math for network address
-    ip_address[working_octet] = str((int(ip_address[working_octet]) / int(net_increment)) * net_increment)
+    if net_bits == 24:  # /24 is a special case it seems
+        ip_address[working_octet] = '0'
+    else:
+        ip_address[working_octet] = str((int(ip_address[working_octet]) / int(net_increment)) * net_increment)
 
     network_address = ip_address[0] + '.' + ip_address[1] + '.' + ip_address[2]\
                       + '.' + ip_address[3]  # Find a better way to do this
