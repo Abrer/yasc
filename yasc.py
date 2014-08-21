@@ -11,10 +11,6 @@ from submath import *
 
 def main():
 
-    # # Fixed values for debugging
-    # ip_address = '192.168.15.43'
-    # # subnet_mask = '255.255.255.252'
-
     err_check_input(sys.argv)
 
     # Detect CIDR (/20, /24, /29) notation.
@@ -26,13 +22,19 @@ def main():
         subnet_mask = sys.argv[2]
     ip_address = sys.argv[1]
 
+    # # Fixed values for debugging
+    # ip_address = '192.168.15.43'
+    # subnet_mask = '255.255.255.0'
+
+
+
     # Some handy vars!
     network_class = get_class(ip_address)
     network_bits = get_network_bits(subnet_mask)
     working_octet = get_working_octet(subnet_mask)
     working_octet_value = get_working_octet_value(subnet_mask)
     
-    net_increment = get_net_increment(working_octet_value)
+    net_increment = get_net_increment(working_octet_value) #getting an error with /24
     binary_mask = get_binary_mask(subnet_mask)
 
     network_address = get_network_address(ip_address,

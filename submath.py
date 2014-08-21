@@ -31,7 +31,7 @@ def cidr_to_decimal(network_bits):
     for i in range(0, full_octets):
         decimal_mask += '255.'
         if i == full_octets - 1:
-            octets_left -= 1
+            #octets_left -= 1
             if int(remaining_bits) > 0:
                 decimal_mask += bit_decimal_vals[remaining_bits]
 
@@ -42,7 +42,22 @@ def cidr_to_decimal(network_bits):
         else:
             decimal_mask += '0.'
 
-    return decimal_mask[:-1]
+    #if len > 4, remove last item in list
+    decimal_mask = decimal_mask.split('.')
+
+    # Until I fix the above math, remove extra octets
+    # that are generated with my shit method.
+    for val in decimal_mask:
+        if len(decimal_mask) > 4:
+            decimal_mask.pop(4)
+
+    new_mask = ''
+
+    for val in decimal_mask:
+        new_mask += val + '.'
+
+    # return decimal_mask[:-1]
+    return new_mask[:-1]
 
 def num_of_hosts(net_bits):
     # Return number of hosts per network
@@ -219,10 +234,13 @@ def get_working_octet(subnet_mask):
 def get_net_increment(working_octet_value):
     # Return the Network Increment based on
     # the working octet value of our Subnet Mask.
+
     if working_octet_value == '0':
-        return 1
+        value = 1
     else:
-        return 256 - int(working_octet_value)
+        value = 256 - int(working_octet_value)
+
+    return value
 
 def get_class(ip_address):
     # Get our class!
