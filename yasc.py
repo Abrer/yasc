@@ -54,7 +54,7 @@ def main():
     print '-' * 40                      # Divider!
     print 'Class: \t\t%s'               % network_class
     print 'Network Addr: \t%s'          % network_address
-    print 'Network Range: \t%s - %s'    % (first_usable_address, last_usable_address)
+    print 'Host Range: \t%s - %s'       % (first_usable_address, last_usable_address)
     print 'Broadcast: \t%s'             % broadcast_address
     print 'Avail Hosts: \t%s'           % available_hosts
     print 'Avail Subnets: \t%s'         % available_subnets
@@ -62,8 +62,6 @@ def main():
     print 'Binary Mask: \t%s'           % binary_mask
     print 'Net Increment: \t%s'         % net_increment
     print ''
-
-
 
     # These values are used for calculating subnet information
     # and aren't generally relevant to the subnetter.

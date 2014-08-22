@@ -11,14 +11,9 @@ Otherwise... a small Python2 project to get back into the swing of things.
 
   Last working on:
 
-    Fixed incorrect ranges on /24
+    Fixed CIDR masks lower than /8 returning a mask of 0.0.0.0
 
   TODO:
-  
-    - Fix input of masks at /8 or lower:
-        /8 shows 255.0.0
-        Lower shows 0.0.0.0
-        Binary Mask displays incorrectly
 
     - Fix Avail Subnets:
         191.168.5.4 /14 returns 0.25 because the class is wrong.

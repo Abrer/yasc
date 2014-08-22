@@ -28,12 +28,16 @@ def cidr_to_decimal(network_bits):
 
     decimal_mask = ''
 
-    for i in range(0, full_octets):
-        decimal_mask += '255.'
-        if i == full_octets - 1:
-            #octets_left -= 1
-            if int(remaining_bits) > 0:
-                decimal_mask += bit_decimal_vals[remaining_bits]
+    # Determine decimal value in the relevant octet
+    if full_octets == 0:
+        decimal_mask += bit_decimal_vals[remaining_bits]
+    else:
+        for i in range(0, full_octets):
+            decimal_mask += '255.'
+            if i == full_octets - 1:
+                #octets_left -= 1
+                if int(remaining_bits) > 0:
+                    decimal_mask += bit_decimal_vals[remaining_bits]
 
     # Add 0's to remaining octets
     for i in range(0, octets_left):
