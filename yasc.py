@@ -5,7 +5,7 @@ __author__ = 'abrer'    # PyCharm adds this to everything....
 import sys
 
 # import all of the old functions now in the
-# newly created submath.py file!
+# newly created submath.py file
 from submath import *
 
 def main():
@@ -20,11 +20,6 @@ def main():
         # If no '/' found, it's already in decimal
         subnet_mask = sys.argv[2]
     ip_address = sys.argv[1]
-
-    # # Fixed values for debugging
-    # ip_address = '172.168.1.51'
-    # subnet_mask = '255.255.255.0'
-
 
     # Some handy vars!
     network_class = get_class(ip_address)
@@ -47,30 +42,26 @@ def main():
     available_hosts = num_of_hosts(network_bits)
     available_subnets = num_of_networks(network_class, network_bits)
 
-    # Print our info to the screen!
+    # Print our info to the screen
     print ''
     print 'IP Address: \t%s /%s'        % (ip_address, network_bits)
     print 'Subnet Mask: \t%s'           % subnet_mask
-    print '-' * 40                      # Divider!
+    print '-' * 15                      # Divider!
     print 'Class: \t\t%s'               % network_class
     print 'Network Addr: \t%s'          % network_address
     print 'Host Range: \t%s - %s'       % (first_usable_address, last_usable_address)
     print 'Broadcast: \t%s'             % broadcast_address
     print 'Avail Hosts: \t%s'           % available_hosts
     print 'Avail Subnets: \t%s'         % available_subnets
-    print '-' * 40                      # Divider!
+    print '-' * 15                      # Divider!
     print 'Binary Mask: \t%s'           % binary_mask
     print 'Net Increment: \t%s'         % net_increment
     print ''
 
-    # These values are used for calculating subnet information
-    # and aren't generally relevant to the subnetter.
-    #
+
     # Working octet may be useful as it's the relevant octet
     # for which we are subnetting.
-
     # print 'Working Octet: \t\t%s'     % working_octet
-    # print 'Working Octet Val: \t%s'   % working_octet_value
 
 
 # Boilerplate to start main()
