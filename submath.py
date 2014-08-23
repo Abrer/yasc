@@ -35,7 +35,6 @@ def cidr_to_decimal(network_bits):
         for i in range(0, full_octets):
             decimal_mask += '255.'
             if i == full_octets - 1:
-                #octets_left -= 1
                 if int(remaining_bits) > 0:
                     decimal_mask += bit_decimal_vals[remaining_bits]
 
@@ -73,6 +72,9 @@ def num_of_hosts(net_bits):
 def num_of_networks(net_class, net_bits):
     # Return number of networks the subnetting yields.
 
+    # Alright -- this function needs help. INVESTIGATE THE DECIMALS.
+    # Obviously this method of deriving networks is bad.
+
     class_bits = 0
 
     if net_class == 'A':
@@ -83,6 +85,12 @@ def num_of_networks(net_class, net_bits):
         class_bits = 24
 
     networks = 2 ** (net_bits - class_bits)
+
+    # If networks is a decimal (not dvisible by two)
+    # IP and subnet provided by user isn't a valid combination
+
+    if '.' in str(networks):  # Means networks is a decimal. BADBAD.
+        networks = 'BAD VAL -- FIX ME'
 
     return str(networks)
 
@@ -97,6 +105,7 @@ def get_first_usable_address(network_address):
     for i in range(0, len(network_address)):
         if i == 3:
             network_address[i] = str(int(network_address[i]) + 1)
+
         # Just adding decimal points so our address looks proper.
         first_usable += network_address[i] + '.'
 
@@ -129,10 +138,12 @@ def get_broadcast(ip_net_address, working_octet, net_increment, net_bits):
 
     if net_bits == 24:  # /24 is a special case
         net_address[3] = '255'
+
     else:
         for i in range(0, len(net_address)):
             if i == working_octet:
                 net_address[i] = str(int(net_address[i]) + net_increment -1)
+
             if i > working_octet:
                 net_address[i] = '255'
 
@@ -182,6 +193,7 @@ def get_working_octet_value(subnet_mask):
         if subnet_mask[i] != '255':
             working_octet_value = subnet_mask[i]
             break
+
         elif i == 3:  # in the event that mask is /32
             working_octet_value = subnet_mask[i]
 
@@ -228,6 +240,7 @@ def get_network_bits(subnet_mask):
     for octet in subnet_mask:
         if octet == '255':
             bits += 8
+
         if octet != '255':
             # Do math to get bits from value and add to bits var
             if octet in mask_bit_values:
@@ -268,14 +281,19 @@ def get_class(ip_address):
 
     if first_octet > 0:
         net_class = 'A'
+
     if first_octet >= 128:
         net_class = 'B'
+
     if first_octet >= 192:
         net_class = 'C'
+
     if first_octet >= 224:  # 224 and above is multicast
         net_class = 'MULTICAST'
+
     if first_octet >= 240:  # 240 and above is expirmental / reserved
         net_class = 'E / EXPERIMENTAL'
+
     if first_octet == 127:  # 127.x.x.x is loopback
         net_class = 'LOOPBACK'
 
@@ -293,16 +311,82 @@ def err_check_input(arguments):
         print 'OR: $ yasc.py 192.168.2.25 /24\n'
         sys.exit(0)
 
-    elif len(arguments) > 3:
-        print '\nNow that\'s just too damn many son. You only need TWO arguments.'
-        print 'Something like: $ yasc.py 192.168.2.25 255.255.255.0'
-        print 'OR: $ yasc.py 192.168.2.25 /24\n'
+    if len(arguments) > 3:
+        print '\nOMG ERROR:'
+        print '\tToo many arguments. You only need 2.\n'
+        print '\tSomething like: $ yasc.py 192.168.2.25 255.255.255.0'
+        print '\tOR:\t\t$ yasc.py 192.168.2.25 /24\n'
         sys.exit(0)
 
     if '/' in arguments[2]:
         bits = arguments[2]
         bits = int(bits[1:])
+
         if bits > 30:
-            print '\nDem bits is too damn high! Don\'t exceed /30!'
-            print 'Should I have a use for that in the future I\'ll add it in.\n'
+            print '\nOMG ERROR:'
+            print '\tDem bits is too damn high! Don\'t exceed /30.\n'
             sys.exit(0)
+
+        elif bits < 8:
+            print '\nOMG ERROR:'
+            print '\tDem bits is too damn low! Use /8 or higher.\n'
+            sys.exit(0)
+
+    else:
+        # Check decimal mask for issues.
+        subnet = arguments[2].split('.')
+
+        for i in range(0, len(subnet)):
+            if i == 0:  # Check first octet
+                if int(subnet[0]) < 255:    # if first octet < 255
+                    print '\nOMG ERROR:'
+                    print '\tFirst octet in mask is lower than 255.\n'
+                    sys.exit(0)
+
+            if int(subnet[i]) > 255:        # if 'i' octet exceeds 255
+                a = i
+                a += 1
+                print '\nOMG ERROR:'
+                print '\tOctet %i in mask is greater than 255.\n' % a
+                sys.exit(0)
+
+            # Is value in octet a valid subnet value?
+            if evaluate_subnet_decimal(int(subnet[i])):  # If True
+                pass
+            else:  # If False
+                a = i
+                a += 1
+                print '\nOMG ERROR:'
+                print '\tOctet %i in mask is an invalid mask value.' % a
+                if i == 3:
+                    sys.exit(0)
+
+def evaluate_subnet_decimal(value):
+    # Check to see if the value is a valid decimal for a mask.
+
+    is_valid = True
+
+    # Blar -- long block of if statements.
+    # Is there a better way?
+    if value == 0:
+        is_valid = True
+    elif value == 128:
+        is_valid = True
+    elif value == 192:
+        is_valid = True
+    elif value == 224:
+        is_valid = True
+    elif value == 240:
+        is_valid = True
+    elif value == 248:
+        is_valid = True
+    elif value == 252:
+        is_valid = True
+    elif value == 254:
+        is_valid = True
+    elif value == 255:
+        is_valid = True
+    else:
+        is_valid = False
+
+    return is_valid
