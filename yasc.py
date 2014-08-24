@@ -3,6 +3,7 @@ __author__ = 'abrer'    # PyCharm adds this to everything....
 # Yet Another Subnet Calculator --  YASC
 
 import sys
+# from colorama import Fore
 
 # import all of the old functions now in the
 # newly created submath.py file

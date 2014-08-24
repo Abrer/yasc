@@ -3,6 +3,7 @@ __author__ = 'abrer'    # PyCharm adds this to everything....
 # All the maths for yasc.
 
 import sys
+#from colorama import Fore
 
 def cidr_to_decimal(network_bits):
     # Take CIDR /notation (/30) and return the decimal equivalent
@@ -79,8 +80,10 @@ def num_of_networks(net_class, net_bits):
 
     if net_class == 'A':
         class_bits = 8
+
     if net_class == 'B':
         class_bits = 16
+
     if net_class == 'C':
         class_bits = 24
 
@@ -90,7 +93,8 @@ def num_of_networks(net_class, net_bits):
     # IP and subnet provided by user isn't a valid combination
 
     if '.' in str(networks):  # Means networks is a decimal. BADBAD.
-        networks = 'BAD VAL -- FIX ME'
+        networks = 'Classless'
+      # networks = 2 ** net_bits
 
     return str(networks)
 
@@ -245,6 +249,7 @@ def get_network_bits(subnet_mask):
             # Do math to get bits from value and add to bits var
             if octet in mask_bit_values:
                 bits += mask_bit_values[octet]
+
     return bits
 
 def get_working_octet(subnet_mask):
@@ -281,19 +286,14 @@ def get_class(ip_address):
 
     if first_octet > 0:
         net_class = 'A'
-
     if first_octet >= 128:
         net_class = 'B'
-
     if first_octet >= 192:
         net_class = 'C'
-
     if first_octet >= 224:  # 224 and above is multicast
         net_class = 'MULTICAST'
-
     if first_octet >= 240:  # 240 and above is expirmental / reserved
         net_class = 'E / EXPERIMENTAL'
-
     if first_octet == 127:  # 127.x.x.x is loopback
         net_class = 'LOOPBACK'
 
@@ -304,6 +304,9 @@ def err_check_input(arguments):
     #[0] should be script location
     #[1] should be IP Address
     #[2] Should be Subnet in DECIMAL or CIDR notation
+    
+    # Set term colors to red
+    #print(Fore.RED)
 
     if len(arguments) < 3:
         print '\nOh dear! You need 2 arguments! '
@@ -327,10 +330,10 @@ def err_check_input(arguments):
             print '\tDem bits is too damn high! Don\'t exceed /30.\n'
             sys.exit(0)
 
-        elif bits < 8:
-            print '\nOMG ERROR:'
-            print '\tDem bits is too damn low! Use /8 or higher.\n'
-            sys.exit(0)
+        # elif bits < 8:
+        #     print '\nOMG ERROR:'
+        #     print '\tDem bits is too damn low! Use /8 or higher.\n'
+        #     sys.exit(0)
 
     else:
         # Check decimal mask for issues.
@@ -357,9 +360,12 @@ def err_check_input(arguments):
                 a = i
                 a += 1
                 print '\nOMG ERROR:'
-                print '\tOctet %i in mask is an invalid mask value.' % a
+                print '\tOctet %i in mask is an invalid mask value.\n' % a
                 if i == 3:
                     sys.exit(0)
+    
+    # Reset term colors
+    #print(Fore.RESET)
 
 def evaluate_subnet_decimal(value):
     # Check to see if the value is a valid decimal for a mask.
